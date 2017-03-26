@@ -2,7 +2,7 @@
 <html lang="de">
 
 <head>
-  <meta charset="UTF-8" />
+	<meta charset="UTF-8" />
   <title>Übersicht</title>
 
 	<style>
@@ -55,6 +55,20 @@
 		visibility: hidden;
 	}
 	}
+
+	.flex-container {
+    display: -webkit-flex;
+    display: flex;
+    width: 400px;
+    height: 250px;
+		list-style: none;
+	}
+	.device { /*flex-item*/
+    background-color: white;
+    width: 380px;
+    height: 100px;
+    margin: 10px;
+	}
 	</style>
 
 </head>
@@ -82,7 +96,7 @@
 	</div>
 	<div>
 		<section>
-			<ul>
+			<ul class="flex-container">
 				<li class="device">
 						<img src="images/thermometer_warm.svg" alt="Heziung" width="64" height="64" />
 						<p class="devname">Heizkörper Esszimmer</p>
@@ -135,9 +149,9 @@
 		</section>
 	</div>
 	
-	<footer>
-		<p>(c) Something</p>
-	</footer>
+  <footer>
+    <p>Â©2017 BIG Smart Home</p>
+  </footer>
 	
 </body>
 
