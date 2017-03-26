@@ -2,12 +2,143 @@
 <html lang="de">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <meta charset="UTF-8" />
+  <title>Übersicht</title>
+
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+		background-color: lightgrey;
+		font-family: "Arial";
+	}
+	h1 {
+		font-size: 1.8em;
+	}
+	@media screen and (max-width: 767px) {
+	button.big {
+		visibility: hidden;
+	}
+	button.small {
+		background-color: blue;
+    border: none;
+		border-radius: 6px;
+    color: white;
+		position: absolute;
+    width: 48px;
+		height: 48px;
+		top: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0,82em;
+    cursor: pointer;
+	}
+	}
+	@media screen and (min-width: 768px) {
+	button.big {
+		background-color: blue;
+    border: none;
+		border-radius: 6px;
+    color: white;
+		position: absolute;
+    width: 128px;
+		height: 32px;
+		top: 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0,82em;
+    cursor: pointer;
+	}
+	button.small{
+		visibility: hidden;
+	}
+	}
+	</style>
+
 </head>
 
 <body>
-
+	<div style="height: 64px; background-color: darkorange;">
+	<header>
+		<div style="display:inline-block; width: 64px; height: 64px; padding: 8px 0;">
+			<img src="images/big-logo-small.png" style="margin: auto; display: block;" />
+		</div>
+		<h1 style="text-align: left; display: inline; position: absolute; max-width: 336px">BIG Smart Home</h1>
+		<div>
+			<button class="big" style="right: 4px">Abmelden</button>
+			<button class="big" style="right: 136px">Optionen</button>
+			<button class="small" style="right: 8px">_</button>
+		</div>
+	</header>
+	</div>
+	<div style="position: absolute; height: 100%; right: 0px; margin-top 0px; padding: 4px; border-left-style: solid; border-width: 1px;">
+			<h2>Serverstatus:</h2>
+			<p>Benutzer: Administrator</p>
+			<p>Systemstartzeit 10:00</p>
+			<p>Systemstartdatum: 06.03.2017</p>
+			<p>Fehlgeschlagene Logins: 3</p>
+	</div>
+	<div>
+		<section>
+			<ul>
+				<li class="device">
+						<img src="images/thermometer_warm.svg" alt="Heziung" width="64" height="64" />
+						<p class="devname">Heizkörper Esszimmer</p>
+						<p class="devtype">Heizkörperthermostat</p>
+						<p class="devdesc">eQ-3 Smart</p>
+				</li>
+				<li class=device">
+						<img src="images/thermometer_cold.svg" alt="Heziung" width="64" height="64" />
+						<p class="devname">Heizkörper Badezimmer</p>
+						<p class="devtype">Heizkörperthermostat</p>
+						<p class="devdesc">eQ-3 Smart</p>
+				</li>
+				<li class="device">
+						<img src="images/bulb_off.svg" alt="Glühbirne" width="64" height="64" />
+						<p class="devname">Beleuchtung Außen</p>
+						<p class="devtype">Glühbirne</p>
+						<p class="devdesc">Osram Lightify</p>
+				</li>
+				<li class="device">
+						<img src="images/bulb_on.svg" alt="Glühbirne" width="64" height="64" />
+						<p class="devname">Beleuchtunh Küche</p>
+						<p class="devtype">Glüchbirne</p>
+						<p class="devdesc">Osram Lightify</p>
+				</li>
+				<li class="device">
+						<img src="images/webcam_on.svg" alt="Kamera" width="64" height="64" />
+						<p class="devname">Kamera Vordertür</p>
+						<p class="devtype">Überwachungskamera</p>
+						<p class="devdesc">ABUS Funk-Außenkamera<br />TVAC16010A</p>
+				</li>
+				<li class="device">
+						<img src="images/webcam_off.svg" alt="Kamera" width="64" height="64 /">
+						<p class="devname">Kamera Wohnzimmer</p>
+						<p class="devtype">Webcam</p>
+						<p class="devdesc">HiKam S5</p>				
+				</li>
+				<li class="device">
+						<img src="images/roller_shutter_closed.svg" alt="Rollladen" width="64" height="64" />
+						<p class="devname">Rollladen Wohnzimmer</p>
+						<p class="devtype">Rollladen</p>
+						<p class="devdesc">Somfy RS100 io</p>
+				</li>
+				<li class="device">
+						<img src="images/roller_shutter_halfopen.svg" alt="Rollladen" width="64" height="64" />
+						<p class="devname">Rollladen Wohnzimmer</p>
+						<p class="devtype">Rollladen</p>
+						<p class="devdesc">Somfy RS100 io</p>
+				</li>
+			</ul>
+		</section>
+	</div>
+	
+	<footer>
+		<p>(c) Something</p>
+	</footer>
+	
 </body>
 
 </html>
