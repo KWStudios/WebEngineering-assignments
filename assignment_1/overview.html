@@ -16,10 +16,10 @@
 		font-size: 1.8em;
 	}
 	@media screen and (max-width: 767px) {
-	button.big {
+	.button_big {
 		visibility: hidden;
 	}
-	button.small {
+	.button_small {
 		background-color: blue;
     border: none;
 		border-radius: 6px;
@@ -34,9 +34,12 @@
     font-size: 0,82em;
     cursor: pointer;
 	}
+	.sidebar {
+
+	}
 	}
 	@media screen and (min-width: 768px) {
-	button.big {
+	.button_big {
 		background-color: blue;
     border: none;
 		border-radius: 6px;
@@ -51,8 +54,17 @@
     font-size: 0,82em;
     cursor: pointer;
 	}
-	button.small{
+	.button_small{
 		visibility: hidden;
+	}
+	.sidebar {
+		position: absolute;
+		height: 100%;
+		right: 0px;
+		margin: 8px;
+		padding: 8px;
+		border-left-style: solid;
+		border-width: 1px;"
 	}
 	}
 
@@ -81,13 +93,13 @@
 		</div>
 		<h1 style="text-align: left; display: inline; position: absolute; max-width: 336px">BIG Smart Home</h1>
 		<div>
-			<button class="big" style="right: 4px">Abmelden</button>
-			<button class="big" style="right: 136px">Optionen</button>
-			<button class="small" style="right: 8px">_</button>
+			<a class="button_big" href="./login.html" style="right: 4px">Abmelden</a>
+			<a class="button_big" href="./options.html" style="right: 136px">Optionen</a>
+			<button class="button_small" style="right: 8px">_</button>
 		</div>
 	</header>
 	</div>
-	<div style="position: absolute; height: 100%; right: 0px; margin-top 0px; padding: 4px; border-left-style: solid; border-width: 1px;">
+	<div class="sidebar">
 			<h2>Serverstatus:</h2>
 			<p>Benutzer: Administrator</p>
 			<p>Systemstartzeit 10:00</p>
