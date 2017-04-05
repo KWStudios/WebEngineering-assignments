@@ -18,7 +18,7 @@
    viewBox="0 0 576.219 576.219"
    style="enable-background:new 0 0 576.219 576.219;"
    xml:space="preserve"
-   sodipodi:docname="thermometer_warm.svg"
+   sodipodi:docname="thermometer.svg"
    inkscape:version="0.92.1 r15371"><metadata
      id="metadata3733"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
@@ -36,16 +36,16 @@
      inkscape:window-height="1147"
      id="namedview3729"
      showgrid="false"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="209.56431"
-     inkscape:cy="383.8895"
+     inkscape:zoom="2"
+     inkscape:cx="340.49597"
+     inkscape:cy="256.68268"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="Capa_1" /><g
      id="g3696"
      transform="matrix(1,0,0,0.98958728,0,3)"><path
-       d="M 323.577,408.949 V 131.5892 H 254.64 L 253.93289,406.35969 C 229.95989,418.59369 214.201,444.10305 214.201,472.81205 214.201,513.56405 247.356,546.71805 288.109,546.71805 328.862,546.71805 362.017,513.56405 362.017,472.81205 362.017,444.10405 345.552,421.18405 321.577,408.94905 Z M 318.681,482.906 C 308.363,482.906 299.995,474.539 299.995,464.22 299.995,453.901 308.352,445.534 318.681,445.534 328.999,445.534 337.365,453.901 337.365,464.22 337.365,474.539 328.999,482.906 318.681,482.906 Z"
+       d="M 323.577 408.949 V 323.58843 H 254.64 L 253.93289 406.35969 C 229.95989 418.59369 214.201 444.10305 214.201 472.81205 214.201 513.56405 247.356 546.71805 288.109 546.71805 328.862 546.71805 362.017 513.56405 362.017 472.81205 362.017 444.10405 345.552 421.18405 321.577 408.94905 Z M 318.681 482.906 C 308.363 482.906 299.995 474.539 299.995 464.22 299.995 453.901 308.352 445.534 318.681 445.534 328.999 445.534 337.365 453.901 337.365 464.22 337.365 474.539 328.999 482.906 318.681 482.906 Z"
        id="path3680"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="scccssscssssss"><title
@@ -78,7 +78,7 @@
        id="tspan3817"
        x="355.6221"
        y="338.4295"
-       style="font-size:32px">0</tspan></text>
+       style="font-size:32px">min</tspan></text>
 <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
@@ -90,7 +90,7 @@
        id="tspan3817-6"
        x="356.38217"
        y="60.901962"
-       style="font-size:32px">50</tspan></text>
+       style="font-size:32px">max</tspan></text>
 <rect
      id="rect59"
      width="55.043415"
