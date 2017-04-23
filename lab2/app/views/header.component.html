@@ -1,8 +1,9 @@
 
 <header aria-labelledby="bannerheadline">
-  <img *ngIf="router?.url.includes('/login')" class="title-image" routerLink="/login" src="../images/big-logo-small.png" alt="BIG Smart Home logo">
-  <img *ngIf="router?.url.includes('/overview')" class="title-image" routerLink="/overview" src="../../images/big-logo-small.png" alt="BIG Smart Home logo">
-  <img *ngIf="router?.url.includes('/options')" class="title-image" routerLink="/overview" src="../../images/big-logo-small.png" alt="BIG Smart Home logo">
+  <a *ngIf="router?.url.includes('/login')" class="title-image" routerLink="/login"><img src="../images/big-logo-small.png" alt="BIG Smart Home logo"></a>
+  <a *ngIf="router?.url.includes('/overview')" class="title-image" routerLink="/overview"><img src="../../images/big-logo-small.png" alt="BIG Smart Home logo"></a>
+  <a *ngIf="router?.url.includes('/options')" class="title-image" routerLink="/overview"><img src="../../images/big-logo-small.png" alt="BIG Smart Home logo"></a>
+  <a *ngIf="router?.url.includes('/details')" class="title-image" routerLink="/overview"><img src="../../images/big-logo-small.png" alt="BIG Smart Home logo"></a>
 
   <h1 class="header-title" id="bannerheadline">
     BIG Smart Home
@@ -10,9 +11,9 @@
   <nav aria-labelledby="navigationheadline">
     <h2 class="accessibility" id="navigationheadline">Navigation</h2>
     <ul class="navigation-list">
-      <li class="nav-items" *ngIf="router?.url.includes('/options') || router?.url.includes('/overview')">
+      <li class="nav-items" *ngIf="router?.url.includes('/options') || router?.url.includes('/overview') || router?.url.includes('/details')">
         <ul>
-          <li *ngIf="router?.url.includes('/overview')">
+          <li *ngIf="router?.url.includes('/overview') || router?.url.includes('/details')">
             <a routerLink="/options" class="button" accesskey="2">Optionen</a>
           </li>
           <li>
@@ -20,7 +21,7 @@
           </li>
         </ul>
       </li>
-      <li *ngIf="router?.url.includes('/options') || router?.url.includes('/overview')" class="overflow-icon">
+      <li *ngIf="router?.url.includes('/options') || router?.url.includes('/overview') || router?.url.includes('/details')" class="overflow-icon">
         <a class="button" accesskey="1">☰</a>
       </li>
     </ul>
