@@ -16,7 +16,7 @@
         </label>
         <input type="password" name="password" id="new-password-input" placeholder="Neues Passwort" required
                class="form-input" minlength="8"
-               maxlength="12" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}">
+               maxlength="12" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}" [(ngModel)]="newpassword">
       </div>
       <div class="form-row">
         <label class="form-label" for="repeat-password-input">
@@ -24,11 +24,11 @@
         </label>
         <input type="password" name="password" id="repeat-password-input" placeholder="Neues Passwort wiederholen"
                required class="form-input" minlength="8"
-               maxlength="12" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}">
+               maxlength="12" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}" [(ngModel)]="repeatpassword">
         <span id="new-password-error" class="error-text"></span>
       </div>
       <div class="form-row form-row-center">
-        <button id="save-changes-button" class="button button-submit">
+        <button [disabled]="(newpassword == repeatpassword)" routerLink="/overview" id="save-changes-button" class="button button-submit">
           Änderung speichern
         </button>
       </div>
