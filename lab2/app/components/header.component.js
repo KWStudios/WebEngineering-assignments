@@ -9,15 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var HeaderComponent = (function () {
-    function HeaderComponent() {
+    function HeaderComponent(router) {
+        this.router = router;
+        console.log(router.url);
     }
     HeaderComponent = __decorate([
         core_1.Component({
             selector: 'my-header',
             templateUrl: '../app/views/header.component.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.Router])
     ], HeaderComponent);
     return HeaderComponent;
 }());
