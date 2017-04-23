@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var login_component_1 = require('./components/login.component');
 var overview_component_1 = require('./components/overview.component');
+var options_component_1 = require('./components/options.component');
 var routes = [
     {
         path: '',
@@ -25,6 +26,10 @@ var routes = [
     {
         path: 'overview',
         component: overview_component_1.OverviewComponent
+    },
+    {
+        path: 'options',
+        component: options_component_1.OptionsComponent
     }
 ];
 var AppRoutingModule = (function () {
