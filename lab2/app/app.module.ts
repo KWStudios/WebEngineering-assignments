@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent }         from './components/app.component';
 import { LoginComponent }       from './components/login.component'
 import { OptionsComponent }       from './components/options.component'
+import { HeaderComponent }      from './components/header.component';
+import { FooterComponent }      from './components/footer.component';
 
 @NgModule({
   imports: [
@@ -21,7 +23,9 @@ import { OptionsComponent }       from './components/options.component'
   declarations: [
     AppComponent,
     LoginComponent,
-    OptionsComponent
+    OptionsComponent,
+    HeaderComponent,
+    FooterComponent
   ],
 
   bootstrap: [ AppComponent ]

@@ -7,9 +7,9 @@ import { FooterComponent } from './footer.component'
   moduleId: module.id,
   selector: 'my-app',
   template: `
-  <header></header>
+  <my-header></my-header>
   <router-outlet></router-outlet>
-  <footer></footer>
+  <my-footer></my-footer>
   `
 })
 export class AppComponent {
