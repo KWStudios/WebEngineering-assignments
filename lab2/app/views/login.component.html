@@ -1,13 +1,13 @@
 
 <div class="main-container">
   <main aria-labelledby="formheadline">
-    <form class="form" method="post" action="overview.html">
+    <form class="form">
       <h2 id="formheadline" class="registration-headline">Anmelden</h2>
       <div class="form-row">
         <label class="form-label" for="username-input">
           Benutzername
         </label>
-        <input type="text" name="username" id="username-input" required class="form-input">
+        <input type="text" name="username" id="username-input" required class="form-input" [(ngModel)]="username">
         <span id="username-error" class="error-text"></span>
       </div>
       <div class="form-row">
@@ -15,13 +15,13 @@
           Passwort
         </label>
         <input type="password" name="password" id="password-input" required class="form-input" minlength="4"
-               maxlength="12">
+               maxlength="12" [(ngModel)]="password">
         <span id="password-error" class="error-text"></span>
       </div>
       <div class="form-row form-row-center">
-        <a routerLink="/overview"><button class="button button-submit">
+        <button [disabled]="(!(username&&password))" routerLink="/overview" class="button button-submit">
           Anmelden
-        </button></a>
+        </button>
       </div>
     </form>
   </main>

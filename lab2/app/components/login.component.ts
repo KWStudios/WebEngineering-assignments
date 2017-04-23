@@ -7,3 +7,7 @@ import { Component } from '@angular/core';
 
 export class LoginComponent {
 }
+
+function checkInput(username: string, password:string){
+  return ((username!=null) && (password!=null));
+}

@@ -22,4 +22,7 @@ var LoginComponent = (function () {
     return LoginComponent;
 }());
 exports.LoginComponent = LoginComponent;
+function checkInput(username, password) {
+    return ((username != null) && (password != null));
+}
 //# sourceMappingURL=login.component.js.map
