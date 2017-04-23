@@ -19,6 +19,7 @@ var options_component_1 = require('./components/options.component');
 var header_component_1 = require('./components/header.component');
 var footer_component_1 = require('./components/footer.component');
 var overview_component_1 = require('./components/overview.component');
+var details_component_1 = require('./components/details.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -36,7 +37,8 @@ var AppModule = (function () {
                 options_component_1.OptionsComponent,
                 header_component_1.HeaderComponent,
                 footer_component_1.FooterComponent,
-                overview_component_1.OverviewComponent
+                overview_component_1.OverviewComponent,
+                details_component_1.DetailsComponent
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

@@ -12,6 +12,7 @@ import { OptionsComponent }       from './components/options.component'
 import { HeaderComponent }      from './components/header.component';
 import { FooterComponent }      from './components/footer.component';
 import { OverviewComponent }      from './components/overview.component';
+import { DetailsComponent }      from './components/details.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { OverviewComponent }      from './components/overview.component';
     OptionsComponent,
     HeaderComponent,
     FooterComponent,
-    OverviewComponent
+    OverviewComponent,
+    DetailsComponent
   ],
 
   bootstrap: [ AppComponent ]
