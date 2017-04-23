@@ -9,35 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var login_component_1 = require('./components/login.component');
-var options_component_1 = require('./components/options.component');
-var routes = [
-    {
-        path: '',
-        redirectTo: '/login',
-        pathMatch: 'full'
-    },
-    {
-        path: 'login',
-        component: login_component_1.LoginComponent
-    },
-    {
-        path: 'options',
-        component: options_component_1.OptionsComponent
+var OptionsComponent = (function () {
+    function OptionsComponent() {
     }
-];
-var AppRoutingModule = (function () {
-    function AppRoutingModule() {
-    }
-    AppRoutingModule = __decorate([
-        core_1.NgModule({
-            imports: [router_1.RouterModule.forRoot(routes)],
-            exports: [router_1.RouterModule]
+    OptionsComponent = __decorate([
+        core_1.Component({
+            selector: 'options-component',
+            templateUrl: './app/views/options.component.html'
         }), 
         __metadata('design:paramtypes', [])
-    ], AppRoutingModule);
-    return AppRoutingModule;
+    ], OptionsComponent);
+    return OptionsComponent;
 }());
-exports.AppRoutingModule = AppRoutingModule;
-//# sourceMappingURL=app-routing.module.js.map
+exports.OptionsComponent = OptionsComponent;
+//# sourceMappingURL=options.component.js.map

@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module'
 
 import { AppComponent }         from './components/app.component';
 import { LoginComponent }       from './components/login.component'
+import { OptionsComponent }       from './components/options.component'
 
 @NgModule({
   imports: [
@@ -16,10 +17,11 @@ import { LoginComponent }       from './components/login.component'
     ChartsModule,
     AppRoutingModule
   ],
-  
+
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    OptionsComponent
   ],
 
   bootstrap: [ AppComponent ]

@@ -15,6 +15,7 @@ var ng2_charts_1 = require('ng2-charts');
 var app_routing_module_1 = require('./app-routing.module');
 var app_component_1 = require('./components/app.component');
 var login_component_1 = require('./components/login.component');
+var options_component_1 = require('./components/options.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -28,7 +29,8 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
-                login_component_1.LoginComponent
+                login_component_1.LoginComponent,
+                options_component_1.OptionsComponent
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
