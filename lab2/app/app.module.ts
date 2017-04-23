@@ -7,7 +7,9 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module'
 
 import { AppComponent }         from './components/app.component';
-import { LoginComponent }       from './components/login.component'
+import { LoginComponent }       from './components/login.component';
+import { HeaderComponent }      from './components/header.component';
+import { FooterComponent }      from './components/footer.component';
 
 @NgModule({
   imports: [
@@ -16,10 +18,12 @@ import { LoginComponent }       from './components/login.component'
     ChartsModule,
     AppRoutingModule
   ],
-  
+
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HeaderComponent,
+    FooterComponent
   ],
 
   bootstrap: [ AppComponent ]

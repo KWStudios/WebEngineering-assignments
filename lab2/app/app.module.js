@@ -15,6 +15,8 @@ var ng2_charts_1 = require('ng2-charts');
 var app_routing_module_1 = require('./app-routing.module');
 var app_component_1 = require('./components/app.component');
 var login_component_1 = require('./components/login.component');
+var header_component_1 = require('./components/header.component');
+var footer_component_1 = require('./components/footer.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -28,7 +30,9 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
-                login_component_1.LoginComponent
+                login_component_1.LoginComponent,
+                header_component_1.HeaderComponent,
+                footer_component_1.FooterComponent
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
