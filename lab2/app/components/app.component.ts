@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
 
+import { HeaderComponent } from './header.component'
+import { FooterComponent } from './footer.component'
+
 @Component({
   moduleId: module.id,
   selector: 'my-app',
-  template: '<body><h2>Hello {{name}}!</h2></body>'
+  template: `
+  <header></header>
+  <router-outlet></router-outlet>
+  <footer></footer>
+  `
 })
 export class AppComponent {
-  name: string = "World";
 }
