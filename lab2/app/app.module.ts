@@ -10,6 +10,7 @@ import { AppComponent }         from './components/app.component';
 import { LoginComponent }       from './components/login.component';
 import { HeaderComponent }      from './components/header.component';
 import { FooterComponent }      from './components/footer.component';
+import { OverviewComponent }      from './components/overview.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { FooterComponent }      from './components/footer.component';
     AppComponent,
     LoginComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    OverviewComponent
   ],
 
   bootstrap: [ AppComponent ]
