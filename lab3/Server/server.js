@@ -14,6 +14,8 @@ var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var uuid = require('uuid');
 
+var user = {email: "", password: ""};
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
@@ -49,7 +51,20 @@ app.post("/updateCurrent", function (req, res) {
 function readUser() {
     "use strict";
     //TODO Lesen Sie die Benutzerdaten aus dem login.config File ein.
+    fs.readFile('resources/login.config', 'utf8', function (err, data) {
+        if (err) {
+          return console.log(err);
+        }
+        console.log(data);
+        user.email = data.split(' ')[1].split('\n')[0];
+        user.password = data.split(' ')[2];
+    });
 }
+
+app.get("/test", function (req, res) {
+    "use strict";
+    res.send("email: " + user.email + "\npassword: " + user.password + "\n");
+});
 
 function readDevices() {
     "use strict";
@@ -84,4 +99,3 @@ var server = app.listen(8081, function () {
     var port = server.address().port;
     console.log("Big Smart Home Server listening at http://%s:%s", host, port);
 });
-
