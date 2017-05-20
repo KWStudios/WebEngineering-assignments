@@ -80,6 +80,7 @@ function readDevices() {
          }
          devices = JSON.parse(data);
          console.log(devices.devices[0].id);
+         simulation.simulateSmartHome(devices.devices, refreshConnected);
      });
 }
 
@@ -223,7 +224,8 @@ app.post("/updateCurrent", function (req, res) {
                if (devices.devices[d].id === id) {
                  for (var cU = 0; cU < devices.devices[d].control_units.length; cU++) {
                    if (devices.devices[d].control_units[cU].name === cName) {
-                     devices.devices[d].control_units[cU].current = cCurrent;
+                     //devices.devices[d].control_units[cU].current = cCurrent;
+                     simulation.updatedDeviceValue(devices.devices[d], devices.devices[d].control_units[cU], Number(cCurrent));
                    }
                  }
                }
