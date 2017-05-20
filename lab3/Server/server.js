@@ -173,6 +173,10 @@ app.post("/updateCurrent", function (req, res) {
      *      simulation.updatedDeviceValue(device, control_unit, Number(new_value));
      * Diese Funktion verändert gleichzeitig auch den aktuellen Wert des Gerätes, Sie müssen diese daher nur mit den korrekten Werten aufrufen.
      */
+     if (!checkToken(req, res)) {
+       return;
+     }
+
      var body = req.body;
      if (body === undefined || body === null) {
        res.status(400).json({ success: false, error: "A body with the values you want to edit as a json string must be provided." });
@@ -228,6 +232,9 @@ app.post("/updateCurrent", function (req, res) {
 app.post("/devices", function (req, res) {
   "use strict";
   // Adds a device to the list
+  if (!checkToken(req, res)) {
+    return;
+  }
 
   var body = req.body;
   if (body === undefined || body === null) {
@@ -266,6 +273,10 @@ app.post("/devices", function (req, res) {
 app.delete("/device/:id", function (req, res) {
   "use strict";
   // Deletes a device if it was provided correctly
+  if (!checkToken(req, res)) {
+    return;
+  }
+
   var deleted = false;
   var id = req.params.id;
   for (var i = devices.devices.length - 1; i >= 0; i--) {
