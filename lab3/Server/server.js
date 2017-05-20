@@ -31,9 +31,9 @@ app.use(cors());
 //TODO Implementieren Sie hier Ihre REST-Schnittstelle
 /* Ermöglichen Sie wie in der Angabe beschrieben folgende Funktionen:
  *  Abrufen aller Geräte als Liste ✅
- *  Hinzufügen eines neuen Gerätes
+ *  Hinzufügen eines neuen Gerätes ✅
  *  Löschen eines vorhandenen Gerätes ✅
- *  Bearbeiten eines vorhandenen Gerätes (Verändern des Gerätezustandes und Anpassen des Anzeigenamens)
+ *  Bearbeiten eines vorhandenen Gerätes (Verändern des Gerätezustandes und Anpassen des Anzeigenamens) ✅
  *  Log-in und Log-out des Benutzers ✅
  *  Ändern des Passworts
  *  Abrufen des Serverstatus (Startdatum, fehlgeschlagene Log-ins). ✅
@@ -223,6 +223,44 @@ app.post("/updateCurrent", function (req, res) {
 
      refreshConnected();
      res.json({ success: true });
+});
+
+app.post("/devices", function (req, res) {
+  "use strict";
+  // Adds a device to the list
+
+  var body = req.body;
+  if (body === undefined || body === null) {
+    res.status(400).json({ success: false, error: "The body must be set." });
+  }
+
+  var names = ["description", "display_name", "type", "type_name", "image", "image_alt", "control_units"];
+  for (var n = 0; n < names.length; n++) {
+    if (body[names[n]] === undefined || body[names[n]] === null) {
+      var err = "The value " + names[n] + " must be set in the json body.";
+      res.status(400).json({ success: false, error: err });
+      return;
+    }
+  }
+  if (Object.prototype.toString.call(body.control_units) !== '[object Array]') {
+    res.status(400).json({ success: false, error: "The control_units elements must be an array." });
+    return;
+  }
+  for (var b = 0; b < body.control_units.length; b++) {
+    if (body.control_units[b].name === undefined || body.control_units[b].name === null) {
+      res.status(400).json({ success: false, error: "All control_units elements must have at least a name value" });
+      return;
+    }
+  }
+
+  // Generate an uuid for this device
+  body.id = uuid();
+
+  // Add device to devices list
+  devices.devices.push(body);
+
+  refreshConnected();
+  res.json({ success: true });
 });
 
 app.delete("/device/:id", function (req, res) {
