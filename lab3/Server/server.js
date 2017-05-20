@@ -22,6 +22,7 @@ var pemFile = "";
 // Session specific storage
 var failedLogins = 0;
 var startDate = new Date();
+var verifiedClientIds = [];
 // End Session specific storage
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,7 +36,7 @@ app.use(cors());
  *  Löschen eines vorhandenen Gerätes ✅
  *  Bearbeiten eines vorhandenen Gerätes (Verändern des Gerätezustandes und Anpassen des Anzeigenamens) ✅
  *  Log-in und Log-out des Benutzers ✅
- *  Ändern des Passworts
+ *  Ändern des Passworts ✅
  *  Abrufen des Serverstatus (Startdatum, fehlgeschlagene Log-ins). ✅
  *
  *  BITTE BEACHTEN!
@@ -98,7 +99,6 @@ function checkToken(req, res) {
   // Replace Bearer if it is at the beginning of the Authorization header as this is a default value for jwt authorization
   var token = auth.trim().replace(/^(Bearer)/, "").trim();
   try {
-    console.log(pemFile);
     jwt.verify(token, pemFile);
     return true;
   } catch(err) {
@@ -122,7 +122,15 @@ function refreshConnected() {
 
      var updateWss = expressWs.getWss('/update');
      updateWss.clients.forEach(function (client) {
-       client.send(JSON.stringify(devices));
+       var contains = false;
+       for (var i = 0; i < verifiedClientIds.length; i++) {
+         if(verifiedClientIds[i] === client) {
+           if(!contains) {
+             contains = true;
+             client.send(JSON.stringify(devices));
+           }
+         }
+        }
      });
 }
 
@@ -133,12 +141,12 @@ app.post("/login", function (req, res) {
     // Checks the request header for "email" and "password".
     // Returns the token as the body response if email and password did match.
 
-    var email = req.get("email").toLowerCase().trim();
-    var password = req.get("password").trim();
-    if (email === undefined || password === undefined) {
+    if (req.get("email") === undefined || req.get("password") === undefined) {
       res.status(403).json({ success: false, error: 'Email and Password must be provided as header values.' });
       return;
     }
+    var email = req.get("email").toLowerCase().trim();
+    var password = req.get("password").trim();
     if (email !== user.email || password !== user.password) {
       res.status(403).json({ success: false, error: 'Email and/or Password did not match.' });
       return;
@@ -270,7 +278,36 @@ app.post("/devices", function (req, res) {
   res.json({ success: true });
 });
 
-app.delete("/device/:id", function (req, res) {
+app.post("/editPassword", function(req, res) {
+  "use strict";
+  // updates the password
+  if (!checkToken(req, res)) {
+    return;
+  }
+
+  if(req.get("old_password") === undefined || req.get("new_password") === undefined) {
+    res.status(403).json({ success: false, error: "old_password and new_password must be set" });
+    return;
+  }
+
+  if(user.password === req.get("old_password")) {
+    user.password = req.get("new_password");
+  } else {
+    res.status(403).json({ success: false, error: "old_password is wrong" });
+    return;
+  }
+
+  fs.writeFile("resources/login.config", "username: " + user.email + "\npassword: " + user.password, function (err) {
+      if (err) {
+        res.status(500).json({ success: false, error: "internal server error", exception: err});
+        return console.log(err);
+      }
+
+      res.json({success: true});
+  });
+});
+
+app.delete("/devices/:id", function (req, res) {
   "use strict";
   // Deletes a device if it was provided correctly
   if (!checkToken(req, res)) {
@@ -295,6 +332,19 @@ app.delete("/device/:id", function (req, res) {
 
 app.ws('/update', function(ws, req) {
   ws.on('message', function(msg) {
+    var verified = true;
+    try {
+      jwt.verify(msg.trim(), pemFile);
+      verified = true;
+    } catch(err) {
+      verified = false;
+    }
+    if(verified) {
+      console.log("verified client");
+      verifiedClientIds.push(ws);
+    } else {
+      console.log("not verified client");
+    }
     ws.send(msg);
   });
 });
