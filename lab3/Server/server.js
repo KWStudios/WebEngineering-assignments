@@ -20,8 +20,6 @@ var cert = "";
 var pemFile = "";
 
 // Session specific storage
-var tokens = [];
-var websocketConnections = [];
 var failedLogins = 0;
 var startDate = new Date();
 // End Session specific storage
@@ -34,7 +32,7 @@ app.use(cors());
 /* Ermöglichen Sie wie in der Angabe beschrieben folgende Funktionen:
  *  Abrufen aller Geräte als Liste ✅
  *  Hinzufügen eines neuen Gerätes
- *  Löschen eines vorhandenen Gerätes
+ *  Löschen eines vorhandenen Gerätes ✅
  *  Bearbeiten eines vorhandenen Gerätes (Verändern des Gerätezustandes und Anpassen des Anzeigenamens)
  *  Log-in und Log-out des Benutzers ✅
  *  Ändern des Passworts
@@ -57,7 +55,7 @@ function readUser() {
         }
         console.log(data);
         user.email = data.split(' ')[1].split('\n')[0].toLowerCase().trim();
-        user.password = "" + data.split(' ')[2].toLowerCase().trim();
+        user.password = "" + data.split(' ')[2].trim();
     });
 }
 
@@ -122,9 +120,10 @@ function refreshConnected() {
      * Bitte beachten Sie, dass diese Funktion von der Simulation genutzt wird um periodisch die simulierten Daten an alle Clients zu übertragen.
      */
 
-     for (var w in websocketConnections) {
-       // w.send("avc");
-     }
+     var updateWss = expressWs.getWss('/update');
+     updateWss.clients.forEach(function (client) {
+       client.send(JSON.stringify(devices));
+     });
 }
 
 // ******* Routes *******
@@ -135,7 +134,7 @@ app.post("/login", function (req, res) {
     // Returns the token as the body response if email and password did match.
 
     var email = req.get("email").toLowerCase().trim();
-    var password = req.get("password").toLowerCase().trim();
+    var password = req.get("password").trim();
     if (email === undefined || password === undefined) {
       res.status(403).json({ success: false, error: 'Email and Password must be provided as header values.' });
       return;
@@ -146,8 +145,6 @@ app.post("/login", function (req, res) {
     }
 
     var token = jwt.sign({ big: 'big', smart: 'smart', home: 'home' }, cert, { algorithm: 'RS256'});
-
-    tokens.push(token);
 
     res.json({ success: true, token: token });
 });
@@ -176,15 +173,81 @@ app.post("/updateCurrent", function (req, res) {
      *      simulation.updatedDeviceValue(device, control_unit, Number(new_value));
      * Diese Funktion verändert gleichzeitig auch den aktuellen Wert des Gerätes, Sie müssen diese daher nur mit den korrekten Werten aufrufen.
      */
+     var body = req.body;
+     if (body === undefined || body === null) {
+       res.status(400).json({ success: false, error: "A body with the values you want to edit as a json string must be provided." });
+       return;
+     }
+
+     var id = body.id;
+     if (id === undefined) {
+       res.status(400).json({ success: false, error: "The id value must be set in the json body." });
+       return;
+     }
+
+     var name = body.display_name;
+     var control_units = body.control_units;
+
+     if (name === undefined && control_units === undefined) {
+       res.status(400).json({ success: false, error: "Either display_name or control_units must be set in the json body." });
+       return;
+     }
+
+     if (name !== undefined) {
+       for (var i = devices.devices.length - 1; i >= 0; i--) {
+         if (devices.devices[i].id === id) {
+           devices.devices[i].display_name = name;
+         }
+       }
+     }
+
+     if (control_units !== undefined) {
+       if (Object.prototype.toString.call(control_units) === '[object Array]') {
+         for (var u = 0; u < control_units.length; u++) {
+           var cName = control_units[u].name;
+           var cCurrent = control_units[u].current;
+           if (cName !== undefined && cCurrent !== undefined) {
+             for (var d = devices.devices.length - 1; d >= 0; d--) {
+               if (devices.devices[d].id === id) {
+                 for (var cU = 0; cU < devices.devices[d].control_units.length; cU++) {
+                   if (devices.devices[d].control_units[cU].name === cName) {
+                     devices.devices[d].control_units[cU].current = cCurrent;
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+
      refreshConnected();
-     res.json({ test: 'To be implemented' });
+     res.json({ success: true });
+});
+
+app.delete("/device/:id", function (req, res) {
+  "use strict";
+  // Deletes a device if it was provided correctly
+  var deleted = false;
+  var id = req.params.id;
+  for (var i = devices.devices.length - 1; i >= 0; i--) {
+    if (devices.devices[i].id === id) {
+      deleted = true;
+      devices.devices.splice(i, 1);
+    }
+  }
+  if (deleted) {
+    refreshConnected();
+    res.json({ success: true });
+  } else {
+    res.status(404).json({ success: false, error: "The given device id was not found." });
+  }
 });
 
 app.ws('/update', function(ws, req) {
   ws.on('message', function(msg) {
     ws.send(msg);
   });
-  websocketConnections.push(ws);
 });
 
 // ******* End Routes *******
