@@ -14,7 +14,17 @@ var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var uuid = require('uuid');
 
-var user = {email: "", password: ""};
+var user = { email: "", password: "" };
+var devices = {};
+var cert = "";
+var pemFile = "";
+
+// Session specific storage
+var tokens = [];
+var websocketConnections = [];
+var failedLogins = 0;
+var startDate = new Date();
+// End Session specific storage
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -22,13 +32,13 @@ app.use(cors());
 
 //TODO Implementieren Sie hier Ihre REST-Schnittstelle
 /* Ermöglichen Sie wie in der Angabe beschrieben folgende Funktionen:
- *  Abrufen aller Geräte als Liste
+ *  Abrufen aller Geräte als Liste ✅
  *  Hinzufügen eines neuen Gerätes
  *  Löschen eines vorhandenen Gerätes
  *  Bearbeiten eines vorhandenen Gerätes (Verändern des Gerätezustandes und Anpassen des Anzeigenamens)
- *  Log-in und Log-out des Benutzers
+ *  Log-in und Log-out des Benutzers ✅
  *  Ändern des Passworts
- *  Abrufen des Serverstatus (Startdatum, fehlgeschlagene Log-ins).
+ *  Abrufen des Serverstatus (Startdatum, fehlgeschlagene Log-ins). ✅
  *
  *  BITTE BEACHTEN!
  *      Verwenden Sie dabei passende Bezeichnungen für die einzelnen Funktionen.
@@ -36,16 +46,6 @@ app.use(cors());
  *      Vergessen Sie auch nicht, dass jeder Client mit aktiver Verbindung über alle Aktionen via Websocket zu informieren ist.
  *      Bei der Anlage neuer Geräte wird eine neue ID benötigt. Verwenden Sie dafür eine uuid (https://www.npmjs.com/package/uuid, Bibliothek ist bereits eingebunden).
  */
-
-app.post("/updateCurrent", function (req, res) {
-    "use strict";
-    //TODO Vervollständigen Sie diese Funktion, welche den aktuellen Wert eines Gerätes ändern soll
-    /*
-     * Damit die Daten korrekt in die Simulation übernommen werden können, verwenden Sie bitte die nachfolgende Funktion.
-     *      simulation.updatedDeviceValue(device, control_unit, Number(new_value));
-     * Diese Funktion verändert gleichzeitig auch den aktuellen Wert des Gerätes, Sie müssen diese daher nur mit den korrekten Werten aufrufen.
-     */
-});
 
 
 function readUser() {
@@ -56,8 +56,8 @@ function readUser() {
           return console.log(err);
         }
         console.log(data);
-        user.email = data.split(' ')[1].split('\n')[0];
-        user.password = data.split(' ')[2];
+        user.email = data.split(' ')[1].split('\n')[0].toLowerCase().trim();
+        user.password = "" + data.split(' ')[2].toLowerCase().trim();
     });
 }
 
@@ -74,8 +74,42 @@ function readDevices() {
      *      simulation.simulateSmartHome(devices.devices, refreshConnected);
      * Der zweite Parameter ist dabei eine callback-Funktion, welche zum Updaten aller verbundenen Clients dienen soll.
      */
+
+     fs.readFile('resources/devices.json', 'utf8', function (err, data) {
+         if (err) {
+           return console.log(err);
+         }
+         devices = JSON.parse(data);
+         console.log(devices.devices[0].id);
+     });
 }
 
+function readCert() {
+  cert = fs.readFileSync('resources/keys/private.key');
+  pemFile = fs.readFileSync('resources/keys/public.pem');
+}
+
+function checkToken(req, res) {
+  var auth = req.get("Authorization");
+  if (auth === undefined) {
+    res.status(403).json({ success: false, error: "You must provide a Authorization header in every request." });
+
+    failedLogins++;
+    return false;
+  }
+  // Replace Bearer if it is at the beginning of the Authorization header as this is a default value for jwt authorization
+  var token = auth.trim().replace(/^(Bearer)/, "").trim();
+  try {
+    console.log(pemFile);
+    jwt.verify(token, pemFile);
+    return true;
+  } catch(err) {
+    res.status(403).json({ success: false, error: "The given token is invalid.", exception: err });
+
+    failedLogins++;
+    return false;
+  }
+}
 
 function refreshConnected() {
     "use strict";
@@ -87,13 +121,80 @@ function refreshConnected() {
      *
      * Bitte beachten Sie, dass diese Funktion von der Simulation genutzt wird um periodisch die simulierten Daten an alle Clients zu übertragen.
      */
+
+     for (var w in websocketConnections) {
+       // w.send("avc");
+     }
 }
+
+// ******* Routes *******
+
+app.post("/login", function (req, res) {
+    "use strict";
+    // Checks the request header for "email" and "password".
+    // Returns the token as the body response if email and password did match.
+
+    var email = req.get("email").toLowerCase().trim();
+    var password = req.get("password").toLowerCase().trim();
+    if (email === undefined || password === undefined) {
+      res.status(403).json({ success: false, error: 'Email and Password must be provided as header values.' });
+      return;
+    }
+    if (email !== user.email || password !== user.password) {
+      res.status(403).json({ success: false, error: 'Email and/or Password did not match.' });
+      return;
+    }
+
+    var token = jwt.sign({ big: 'big', smart: 'smart', home: 'home' }, cert, { algorithm: 'RS256'});
+
+    tokens.push(token);
+
+    res.json({ success: true, token: token });
+});
+
+app.get("/devices", function (req, res) {
+  "use strict";
+  // Returns an array of devices
+  if (!checkToken(req, res)) {
+    return;
+  }
+
+  res.json({ success: true, devices: devices.devices });
+});
+
+app.get("/health_check", function (req, res) {
+  "use strict";
+  // Returns a health check
+  res.json({ start_date: startDate, failed_logins: failedLogins });
+});
+
+app.post("/updateCurrent", function (req, res) {
+    "use strict";
+    // TODO: Vervollständigen Sie diese Funktion, welche den aktuellen Wert eines Gerätes ändern soll
+    /*
+     * Damit die Daten korrekt in die Simulation übernommen werden können, verwenden Sie bitte die nachfolgende Funktion.
+     *      simulation.updatedDeviceValue(device, control_unit, Number(new_value));
+     * Diese Funktion verändert gleichzeitig auch den aktuellen Wert des Gerätes, Sie müssen diese daher nur mit den korrekten Werten aufrufen.
+     */
+     refreshConnected();
+     res.json({ test: 'To be implemented' });
+});
+
+app.ws('/update', function(ws, req) {
+  ws.on('message', function(msg) {
+    ws.send(msg);
+  });
+  websocketConnections.push(ws);
+});
+
+// ******* End Routes *******
 
 
 var server = app.listen(8081, function () {
     "use strict";
     readUser();
     readDevices();
+    readCert();
 
     var host = server.address().address;
     var port = server.address().port;
