@@ -16,7 +16,7 @@ export class LoginComponent {
     }
 
     onSubmit(form: NgForm): void {
-        //TODO Überprüfen Sie die Login-Daten über die REST-Schnittstelle und leiten Sie den Benutzer bei Erfolg auf die Overview-Seite weiter
+        //✅TODO Überprüfen Sie die Login-Daten über die REST-Schnittstelle und leiten Sie den Benutzer bei Erfolg auf die Overview-Seite weiter
 
         var mheaders = new Headers({"email": form.value.username, "password": form.value.password});
 

@@ -32,6 +32,7 @@ var NavigationComponent = (function () {
     };
     NavigationComponent.prototype.doLogout = function () {
         //TODO Loggen Sie den Benutzer über die REST-Schnittstelle aus
+        window.localStorage.removeItem("jwt_token");
         this.router.navigate(["/login"]);
     };
     NavigationComponent = __decorate([

@@ -18,7 +18,7 @@ var LoginComponent = (function () {
         this.loginError = false;
     }
     LoginComponent.prototype.onSubmit = function (form) {
-        //TODO Überprüfen Sie die Login-Daten über die REST-Schnittstelle und leiten Sie den Benutzer bei Erfolg auf die Overview-Seite weiter
+        //✅TODO Überprüfen Sie die Login-Daten über die REST-Schnittstelle und leiten Sie den Benutzer bei Erfolg auf die Overview-Seite weiter
         var _this = this;
         var mheaders = new http_1.Headers({ "email": form.value.username, "password": form.value.password });
         var options = new http_1.RequestOptions({ method: http_1.RequestMethod.Post, url: 'http://localhost:8081/login', headers: mheaders });

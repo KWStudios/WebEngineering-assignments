@@ -34,6 +34,7 @@ export class NavigationComponent {
 
   doLogout(): void {
     //TODO Loggen Sie den Benutzer über die REST-Schnittstelle aus
+    window.localStorage.removeItem("jwt_token");
     this.router.navigate(["/login"]);
   }
 

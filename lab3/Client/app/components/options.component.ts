@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Headers, Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {NgForm} from '@angular/forms';
+import {RequestOptions, Request, RequestMethod, Headers, Http} from '@angular/http';
 
 
 @Component({
@@ -34,10 +34,30 @@ export class OptionsComponent implements OnInit {
      */
     onSubmit(form: NgForm): void {
 
-        //TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
+        //✅TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
         if (!form) {
             return;
         }
+
+        var mheaders = new Headers({"Authorization" : "Bearer " + window.localStorage.getItem("jwt_token"),
+          "new_password": form.value["new-password"],
+          "old_password": form.value["old-password"]
+        });
+
+        var options = new RequestOptions({method: RequestMethod.Post, url: 'http://localhost:8081/editPassword', headers:  mheaders});
+        var req = new Request(options);
+        console.log('req.method:', RequestMethod[req.method]);
+        console.log('options.url:', options.url);
+        console.log('options.headers:', options.headers);
+
+        console.log('halloggg', this.http.request(req).subscribe(
+          res => {  console.log('response', res.json());
+                    this.updateError = false;},
+          fail => { console.log('failure', fail.json());
+                    this.updateError = true;},
+          function(){ console.log('complete');
+                    this.updateError = true;}));
+
         form.resetForm();
 
     }

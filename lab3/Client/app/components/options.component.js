@@ -9,8 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
 require('rxjs/add/operator/toPromise');
+var http_1 = require('@angular/http');
 var OptionsComponent = (function () {
     function OptionsComponent(http) {
         this.http = http;
@@ -30,10 +30,30 @@ var OptionsComponent = (function () {
      * @param form
      */
     OptionsComponent.prototype.onSubmit = function (form) {
-        //TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
+        var _this = this;
+        //✅TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
         if (!form) {
             return;
         }
+        var mheaders = new http_1.Headers({ "Authorization": "Bearer " + window.localStorage.getItem("jwt_token"),
+            "new_password": form.value["new-password"],
+            "old_password": form.value["old-password"]
+        });
+        var options = new http_1.RequestOptions({ method: http_1.RequestMethod.Post, url: 'http://localhost:8081/editPassword', headers: mheaders });
+        var req = new http_1.Request(options);
+        console.log('req.method:', http_1.RequestMethod[req.method]);
+        console.log('options.url:', options.url);
+        console.log('options.headers:', options.headers);
+        console.log('halloggg', this.http.request(req).subscribe(function (res) {
+            console.log('response', res.json());
+            _this.updateError = false;
+        }, function (fail) {
+            console.log('failure', fail.json());
+            _this.updateError = true;
+        }, function () {
+            console.log('complete');
+            this.updateError = true;
+        }));
         form.resetForm();
     };
     OptionsComponent = __decorate([
