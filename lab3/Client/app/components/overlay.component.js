@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var overview_component_1 = require("./overview.component");
 var device_service_1 = require("../services/device.service");
+var http_1 = require('@angular/http');
 var OverlayComponent = (function () {
-    function OverlayComponent(deviceService) {
+    function OverlayComponent(deviceService, http) {
         this.deviceService = deviceService;
+        this.http = http;
         this.overviewComponent = null;
         this.selected_type = null;
         this.controlUnitType_selected = null;
@@ -36,6 +38,30 @@ var OverlayComponent = (function () {
      * @param form
      */
     OverlayComponent.prototype.onSubmit = function (form) {
+        console.log(form.value);
+        var addDeviceOptions = new http_1.RequestOptions({
+            method: http_1.RequestMethod.Post,
+            url: 'http://localhost:8081/devices',
+            headers: new http_1.Headers({ 'Authorization': 'Bearer ' + window.localStorage.getItem('jwt_token'),
+                'Content-Type': 'application/json',
+                body: {
+                    "description": "Genauere Informationen zu diesem Gerät",
+                    "display_name": form.value.displayname,
+                    "type": form.value["type-input"],
+                    "type_name": form.value.typename,
+                    "control_units": [
+                        {
+                            "name": form.value.elementname,
+                            "type": form.value["elementtype-input"],
+                            "min": form.value["minimum-value"],
+                            "max": form.value["maximum-value"],
+                            "primary": true,
+                        }
+                    ]
+                }
+            }) });
+        var addDeviceRequest = new http_1.Request(addDeviceOptions);
+        this.http.request(addDeviceRequest).subscribe(function (res) { }, function (fail) { });
         form.reset();
         this.overviewComponent.closeAddDeviceWindow();
         //TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
@@ -62,7 +88,7 @@ var OverlayComponent = (function () {
             selector: 'my-overlay',
             templateUrl: '../views/overlay.component.html'
         }), 
-        __metadata('design:paramtypes', [device_service_1.DeviceService])
+        __metadata('design:paramtypes', [device_service_1.DeviceService, http_1.Http])
     ], OverlayComponent);
     return OverlayComponent;
 }());

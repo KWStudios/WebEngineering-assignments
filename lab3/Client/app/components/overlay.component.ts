@@ -5,6 +5,7 @@ import {DeviceService} from "../services/device.service";
 import {Device} from "../model/device";
 import {ControlUnit} from "../model/controlUnit";
 import {ControlType} from "../model/controlType";
+import {RequestOptions, Request, RequestMethod, Headers, Http} from '@angular/http';
 
 @Component({
   moduleId: module.id,
@@ -24,7 +25,7 @@ export class OverlayComponent implements OnInit {
   addError: boolean = false;
   createError: boolean = false;
 
-  constructor(private deviceService: DeviceService) {
+  constructor(private deviceService: DeviceService, private http: Http) {
   }
 
 
@@ -46,6 +47,36 @@ export class OverlayComponent implements OnInit {
    * @param form
    */
   onSubmit(form: NgForm): void {
+    console.log(form.value)
+    var addDeviceOptions = new RequestOptions({
+      method: RequestMethod.Post,
+      url: 'http://localhost:8081/devices',
+      headers: new Headers({'Authorization': 'Bearer ' + window.localStorage.getItem('jwt_token'),
+      'Content-Type': 'application/json',
+      body: {
+        "description": "Genauere Informationen zu diesem Gerät",
+        "display_name": form.value.displayname,
+        "type": form.value["type-input"],
+        "type_name": form.value.typename,
+        "control_units": [
+        {
+          "name": form.value.elementname,
+          "type": form.value["elementtype-input"],
+          "min": form.value["minimum-value"],
+          "max": form.value["maximum-value"],
+          "primary": true,
+        }
+      ]
+      }
+    })});
+    var addDeviceRequest = new Request(addDeviceOptions)
+    this.http.request(addDeviceRequest).subscribe(
+      res => {},
+      fail => {}
+    )
+
+
+
     form.reset();
     this.overviewComponent.closeAddDeviceWindow();
 

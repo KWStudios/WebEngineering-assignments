@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var guard_service_1 = require('./services/guard.service');
 var overview_component_1 = require('./components/overview.component');
 var login_component_1 = require('./components/login.component');
 var options_component_1 = require('./components/options.component');
@@ -18,9 +19,9 @@ var device_details_component_1 = require("./components/device-details.component"
 var routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: login_component_1.LoginComponent },
-    { path: 'overview', component: overview_component_1.OverviewComponent },
-    { path: 'options', component: options_component_1.OptionsComponent },
-    { path: 'details/:id', component: device_details_component_1.DeviceDetailsComponent },
+    { path: 'overview', canActivate: [guard_service_1.Guard], component: overview_component_1.OverviewComponent },
+    { path: 'options', canActivate: [guard_service_1.Guard], component: options_component_1.OptionsComponent },
+    { path: 'details/:id', canActivate: [guard_service_1.Guard], component: device_details_component_1.DeviceDetailsComponent },
     { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];
 var AppRoutingModule = (function () {

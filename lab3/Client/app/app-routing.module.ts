@@ -1,6 +1,7 @@
 import {NgModule}             from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
+import {Guard} from './services/guard.service'
 import {OverviewComponent} from './components/overview.component';
 import {LoginComponent} from './components/login.component';
 import {OptionsComponent} from './components/options.component';
@@ -10,9 +11,9 @@ import {DeviceDetailsComponent} from "./components/device-details.component";
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'overview', component: OverviewComponent},
-  {path: 'options', component: OptionsComponent},
-  {path: 'details/:id', component: DeviceDetailsComponent},
+  {path: 'overview', canActivate: [Guard], component: OverviewComponent},
+  {path: 'options', canActivate: [Guard], component: OptionsComponent},
+  {path: 'details/:id', canActivate: [Guard], component: DeviceDetailsComponent},
   {path: '**', redirectTo: '/login', pathMatch: 'full'},
 ];
 
