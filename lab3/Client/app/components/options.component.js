@@ -31,7 +31,7 @@ var OptionsComponent = (function () {
      */
     OptionsComponent.prototype.onSubmit = function (form) {
         var _this = this;
-        //✅TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
+        //TODO Lesen Sie Daten aus der Form aus und übertragen Sie diese an Ihre REST-Schnittstelle
         if (!form) {
             return;
         }
@@ -41,19 +41,7 @@ var OptionsComponent = (function () {
         });
         var options = new http_1.RequestOptions({ method: http_1.RequestMethod.Post, url: 'http://localhost:8081/editPassword', headers: mheaders });
         var req = new http_1.Request(options);
-        console.log('req.method:', http_1.RequestMethod[req.method]);
-        console.log('options.url:', options.url);
-        console.log('options.headers:', options.headers);
-        console.log('halloggg', this.http.request(req).subscribe(function (res) {
-            console.log('response', res.json());
-            _this.updateError = false;
-        }, function (fail) {
-            console.log('failure', fail.json());
-            _this.updateError = true;
-        }, function () {
-            console.log('complete');
-            this.updateError = true;
-        }));
+        this.http.request(req).subscribe(function (res) { _this.updateError = false; }, function (fail) { _this.updateError = true; }, function () { this.updateError = true; });
         form.resetForm();
     };
     OptionsComponent = __decorate([

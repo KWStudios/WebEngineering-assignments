@@ -12,12 +12,13 @@ var core_1 = require('@angular/core');
 var OverviewComponent = (function () {
     function OverviewComponent() {
         this.isAddDevice = false;
-        console.log('overview', 'started');
         var ws = new WebSocket('ws://127.0.0.1:8081/update');
         ws.onopen = function () {
             ws.send(window.localStorage.getItem("jwt_token"));
         };
-        ws.onmessage = function (evt) { console.log('message', 'received'); };
+        ws.onmessage = function (evt) {
+            //DevicesComponent.devices = evt.json();
+        };
         ws.onclose = function () { };
     }
     OverviewComponent.prototype.addDevice = function () {

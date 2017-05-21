@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {Observer} from "rxjs/Observer";
+import {DevicesComponent} from "../components/devices.component";
 
 @Component({
   moduleId: module.id,
@@ -11,14 +12,14 @@ import {Observer} from "rxjs/Observer";
 export class OverviewComponent {
 
   constructor() {
-    console.log('overview', 'started');
-
     var ws = new WebSocket('ws://127.0.0.1:8081/update');
 
     ws.onopen = function() {
       ws.send(window.localStorage.getItem("jwt_token"));
     };
-    ws.onmessage = function(evt) { console.log('message', 'received'); };
+    ws.onmessage = function(evt) {
+      //DevicesComponent.devices = evt.json();
+    };
     ws.onclose = function(){};
 
   }

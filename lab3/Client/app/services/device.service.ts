@@ -34,9 +34,8 @@ export class DeviceService {
 
           var getDeviceRequest = new Request(getDeviceOptions);
           httt.request(getDeviceRequest).subscribe(res => {
-                console.log('hallo', 'nein');
                 Devices = res.json().devices;
-                  resolve(Devices);
+                resolve(Devices);
             });
         });
 

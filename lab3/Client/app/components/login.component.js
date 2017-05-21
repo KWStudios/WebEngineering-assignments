@@ -18,26 +18,15 @@ var LoginComponent = (function () {
         this.loginError = false;
     }
     LoginComponent.prototype.onSubmit = function (form) {
-        //✅TODO Überprüfen Sie die Login-Daten über die REST-Schnittstelle und leiten Sie den Benutzer bei Erfolg auf die Overview-Seite weiter
+        //TODO Überprüfen Sie die Login-Daten über die REST-Schnittstelle und leiten Sie den Benutzer bei Erfolg auf die Overview-Seite weiter
         var _this = this;
         var mheaders = new http_1.Headers({ "email": form.value.username, "password": form.value.password });
         var options = new http_1.RequestOptions({ method: http_1.RequestMethod.Post, url: 'http://localhost:8081/login', headers: mheaders });
         var req = new http_1.Request(options);
-        console.log('req.method:', http_1.RequestMethod[req.method]);
-        console.log('options.url:', options.url);
-        console.log('options.headers:', options.headers);
-        console.log('halloggg', this.http.request(req).subscribe(function (res) {
-            console.log('response', res.json());
+        this.http.request(req).subscribe(function (res) {
             window.localStorage.setItem("jwt_token", res.json().token);
-            console.log('jwt_token', window.localStorage.getItem("jwt_token"));
             _this.router.navigate(['/overview']);
-        }, function (fail) {
-            console.log('failure', fail.json());
-            _this.loginError = true;
-        }, function () {
-            console.log('complete');
-            this.loginError = true;
-        }));
+        }, function (fail) { _this.loginError = true; }, function () { this.loginError = true; });
     };
     LoginComponent = __decorate([
         core_1.Component({

@@ -34,7 +34,6 @@ var DeviceService = (function () {
                 headers: new http_1.Headers({ 'Authorization': 'Bearer ' + window.localStorage.getItem('jwt_token') }) });
             var getDeviceRequest = new http_1.Request(getDeviceOptions);
             httt.request(getDeviceRequest).subscribe(function (res) {
-                console.log('hallo', 'nein');
                 Devices = res.json().devices;
                 resolve(Devices);
             });
