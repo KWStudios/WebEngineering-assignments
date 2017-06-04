@@ -25,6 +25,13 @@ var invalid_tokens = [];
 var system_start = new Date();
 var failed_logins = 0;
 
+var tclient = new twitter({
+  consumer_key: 'GZ6tiy1XyB9W0P4xEJudQ',
+  consumer_secret: 'gaJDlW0vf7en46JwHAOkZsTHvtAiZ3QUd2mD1x26J9w',
+  access_token_key: '1366513208-MutXEbBMAVOwrbFmZtj1r4Ih2vcoHGHE2207002',
+  access_token_secret: 'RMPWOePlus3xtURWRVnv1TgrjTyK7Zk33evp4KKyA'
+});
+
 app.set('secret', "superSecret");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -78,7 +85,11 @@ app.post("/createDevice", function (req, res) {
                 //  - die benötigte Bibliothek ist bereits eingebunden
                 //  - siehe https://www.npmjs.com/package/twitter für eine Beschreibung der Bibliothek
                 //  - verwenden Sie getTwitterPublicationString(groupNum, uuid, date) um den Publication String zu erstellen
-            }
+                var date = new Date();
+                tclient.post('statuses/update', {status: getTwitterPublicationString(64, id, date.toISOString())},  function(error, tweet, response) {
+                  if(error) console.log(error);
+                });
+              }
         });
     } else {
         res.json({status: 401, message: "Unauthorized"});
@@ -585,4 +596,3 @@ var server = app.listen(8081, function () {
     console.log("Big Smart Home Server listening at http://%s:%s", host, port);
 
 });
-
