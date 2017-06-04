@@ -586,3 +586,10 @@ var server = app.listen(8081, function () {
 
 });
 
+var privateKey = fs.readFileSync('./cert/selfsigned.key');
+var certificate = fs.readFileSync('./cert/selfsigned.crt');
+
+https.createServer({
+    key: privateKey,
+    cert: certificate
+}, app).listen(8082);
