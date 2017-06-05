@@ -166,31 +166,30 @@ export class OverlayComponent implements OnInit {
     getSPARQLTypes(): void {
         /*
         PREFIX cat: <http://dbpedia.org/resource/Category:>
-    PREFIX owl: <http://www.w3.org/2002/07/owl#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#broader>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#broader>
 
-    SELECT ?s ?t ?p ?q ?z WHERE {
-      ?s ?p cat:Home_automation .
-      ?s rdf:type owl:Thing .
-      ?s rdfs:label ?t .
-      ?q dbo:product ?s .
+        SELECT ?s ?t ?p ?q ?z WHERE {
+          ?s ?p cat:Home_automation .
+          ?s rdf:type owl:Thing .
+          ?s rdfs:label ?t .
+          ?q dbo:product ?s .
 
         */
         //TODO Lesen Sie mittels SPARQL die gewünschten Daten (wie in der Angabe beschrieben) aus und speichern Sie diese im SessionStorage
         this.http.get("http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=PREFIX+cat%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FCategory%3A%3E%0D%0APREFIX+owl%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0D%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23broader%3E%0D%0A%0D%0ASELECT+%3Fs+%3Ft+%3Fp+%3Fq+%3Fz+WHERE+%7B%0D%0A++%3Fs+%3Fp+cat%3AHome_automation+.%0D%0A++%3Fs+rdf%3Atype+owl%3AThing+.%0D%0A++%3Fs+rdfs%3Alabel+%3Ft+.%0D%0A++%3Fq+dbo%3Aproduct+%3Fs+.%0D%0A++%3Fs+dbo%3Athumbnail+%3Fz%0D%0A++FILTER+%28LANG%28%3Ft%29%3D%27de%27%29%0D%0A%7D&format=application%2Fsparql-results%2Bjson&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on)").toPromise().then(res => {
-            console.log(res)
             sessionStorage.setItem("sparql", res.toString())
 
             let usedNames: String[] = []
-            let loopArray = res.json().results.bindings
-            for (let object in loopArray) {
-                let a = JSON.parse(object);
-                if (!usedNames.some(string => string === a.t.value)) {
-                  this.device_types.push(a.t.value)
-                  console.log(this.device_types)
-                }
-            }
+            let loopArray = res.json().results.bindings as JSON[]
+            loopArray.forEach(object => {
+              let a = JSON.parse(JSON.stringify(object))
+              if (!usedNames.some(string => string === a.t.value)) {
+                this.device_types.push(a.t.value)
+                usedNames.push(a.t.value)
+              }
+            })
         })
     }
 
