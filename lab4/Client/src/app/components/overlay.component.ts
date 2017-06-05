@@ -186,8 +186,9 @@ export class OverlayComponent implements OnInit {
             let loopArray = res.json().results.bindings
             for (let object in loopArray) {
                 let a = JSON.parse(object);
-                if (usedNames.some(string => string === a.t.value)) {
-
+                if (!usedNames.some(string => string === a.t.value)) {
+                  this.device_types.push(a.t.value)
+                  console.log(this.device_types)
                 }
             }
         })
