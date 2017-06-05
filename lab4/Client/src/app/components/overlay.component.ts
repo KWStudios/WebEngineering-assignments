@@ -5,6 +5,8 @@ import {DeviceService} from "../services/device.service";
 import {Device} from "../model/device";
 import {ControlUnit} from "../model/controlUnit";
 import {ControlType} from "../model/controlType";
+import { Http, RequestOptionsArgs, Headers, URLSearchParams } from '@angular/http';
+
 
 @Component({
   selector: 'my-overlay',
@@ -23,7 +25,7 @@ export class OverlayComponent implements OnInit {
   addError: boolean = false;
   createError: boolean = false;
 
-  constructor(private deviceService: DeviceService) {
+  constructor(private deviceService: DeviceService, private http: Http) {
   }
 
 
@@ -163,6 +165,10 @@ export class OverlayComponent implements OnInit {
 
   getSPARQLTypes(): void {
     //TODO Lesen Sie mittels SPARQL die gewünschten Daten (wie in der Angabe beschrieben) aus und speichern Sie diese im SessionStorage
+    this.http.get("http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=PREFIX+cat%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FCategory%3A%3E%0D%0APREFIX+owl%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0D%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23broader%3E%0D%0A%0D%0ASELECT+%3Fs+%3Ft+%3Fp+%3Fq+%3Fz+WHERE+%7B%0D%0A++%3Fs+%3Fp+cat%3AHome_automation+.%0D%0A++%3Fs+rdf%3Atype+owl%3AThing+.%0D%0A++%3Fs+rdfs%3Alabel+%3Ft+.%0D%0A++%3Fq+dbo%3Aproduct+%3Fs+.%0D%0A++%3Fs+dbo%3Athumbnail+%3Fz%0D%0A++FILTER+%28LANG%28%3Ft%29%3D%27de%27%29%0D%0A%7D&format=application%2Fsparql-results%2Bjson&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on)").toPromise().then(res => {
+      console.log(res)
+      sessionStorage.setItem("sparql", res.toString())
+    })
   }
 
 
